@@ -5,12 +5,10 @@ import SignupPage from "../pages/SignupPage/SignupPage.js"
 import LoginPage from "../pages/LoginPage/LoginPage"
 import PostsPage from "../pages/PostsPage/PostsPage"
 import CommentsPage from "../pages/CommentsPage/CommentsPage"
-
-
-
 const Router = () => {
     return (
         <BrowserRouter>
+
             <Routes>
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/signup" element={<SignupPage/>}/>
