@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Flex, Box, FormControl, Input, Stack, Button, Heading, Text, useColorModeValue, Spinner } from '@chakra-ui/react';
 import logo from "../../assets/labeddit-logo.png"
 import { BASE_URL } from '../../constants/url'
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
-import { goToHomePage, goToSignupPage } from '../../routes/coordinator';
+import { goToPostsPage, goToSignupPage } from '../../routes/coordinator';
+import { GlobalContext } from '../../contexts/GlobalContext';
 const LoginPage = () => {
+  const context = useContext(GlobalContext)
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [criateAccount, setCriateAccount] = useState(false)
@@ -43,7 +45,7 @@ const LoginPage = () => {
       window.localStorage.setItem("labeddit-token", response.data.token)
       console.log(response.data)
       setIsLoading(false)
-      goToHomePage(navigate)
+      goToPostsPage(navigate)
 
     } catch (error) {
       console.log(error);
