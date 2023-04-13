@@ -64,7 +64,7 @@ const SignupPage = ()=> {
             </Stack>
             <Stack pt={6}>
               <Text align={'normal'} fontSize={'15px'}>
-              <input type="checkbox" />
+              <input type="checkbox" /> {"   "}
                Eu concordo em receber emails sobre coisas legais no Labeddit
               </Text>
             </Stack>

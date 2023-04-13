@@ -1,20 +1,54 @@
 import React, { useState } from 'react'
-import {Flex, Box, FormControl, Input, Stack, Button, Heading, Text, useColorModeValue} from '@chakra-ui/react';
+import { Flex, Box, FormControl, Input, Stack, Button, Heading, Text, useColorModeValue, Spinner } from '@chakra-ui/react';
 import logo from "../../assets/labeddit-logo.png"
-
+import { BASE_URL } from '../../constants/url'
+import axios from "axios"
+import { useNavigate } from 'react-router-dom';
+import { goToHomePage, goToSignupPage } from '../../routes/coordinator';
 const LoginPage = () => {
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
+  const [criateAccount, setCriateAccount] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const onChangeEmail = (event)=>{
+  const onChangeEmail = (event) => {
     setEmail(event.target.value)
   }
-  const onChangePassword = (event)=>{
+  const onChangePassword = (event) => {
     setPassword(event.target.value)
   }
-  const login =()=>{
-    console.log(email)
-    console.log(password);
+  const signup = async() =>{
+    try {
+      setCriateAccount(true)
+       await axios.post(`${BASE_URL}/users/login`)
+        setCriateAccount(false)
+        goToSignupPage(navigate)
+    } catch (error) {
+      setIsLoading(false)
+      console.log(error);
+
+    }
+  }
+  const login = async () => {
+    try {
+      setIsLoading(true)
+      const body = {
+        email: email,
+        password: password
+      }
+      const response = await axios.post(
+        `${BASE_URL}/users/login`, body
+      )
+      window.localStorage.setItem("labeddit-token", response.data.token)
+      console.log(response.data)
+      setIsLoading(false)
+      goToHomePage(navigate)
+
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false)
+    }
   }
   return (
     <Flex
@@ -27,43 +61,47 @@ const LoginPage = () => {
           <img src={logo}></img>
           <Heading fontSize={'5xl'}>LabEddit</Heading>
           <Text fontSize={'lg'} color={'gray.600'}>
-           O projeto de rede social da Labenu
+            O projeto de rede social da Labenu
           </Text>
         </Stack>
         <Box
-       >
+        >
           <Stack spacing={3}>
             <FormControl id="email">
-              <Input type="email" placeholder='E-mail' value={email} onChange={onChangeEmail}/>
+              <Input type="email" placeholder='E-mail' value={email} onChange={onChangeEmail} />
             </FormControl>
             <FormControl id="password">
               <Input type="password" placeholder='Senha' value={password} onChange={onChangePassword} />
             </FormControl>
-            <Stack spacing={4}>
-              
-              <Button 
+            <Stack spacing={9}>
+
+              <Button
                 borderRadius="20"
                 bgGradient={'linear(to-r, #FF6489, #F9B24E)'}
                 color={'white'}
                 _hover={{
-                  bg:'#FFF' ,
+                  bg: '#FFF',
                   color: '#FE7E02',
                   border: '1px'
                 }}
                 onClick={login}>
-                Continuar
+                {/* se sLoading for false(ñ logou ainda) senão, spinner até ser falso de novo */}
+                {!isLoading ? 'Continuar' : <Spinner />}
               </Button>
+              </Stack>
+
               <hr background-color={'red'}></hr>
+              <Stack spacing={4}>
               <Button
-              borderRadius="20"
+                borderRadius="20"
                 bg={'#FFFFFF'}
                 border={'1px'}
                 color={'#FE7E02'}
                 _hover={{
-                  bg:'#FE7E02' ,
+                  bg: '#FE7E02',
                   color: '#FFFF'
-                }}>
-                Crie uma conta!
+                }} onClick={signup}>
+                {!criateAccount ? 'Crie uma conta' : <Spinner />}
               </Button>
             </Stack>
           </Stack>
