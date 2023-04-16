@@ -19,7 +19,7 @@ export default function GlobalState() {
   const context = {
     isLogged: isLogged,
     setIsLogged: setIsLogged
-  };
+  }
 
   const fetchPosts = async () => {
     try {
@@ -34,7 +34,7 @@ export default function GlobalState() {
       console.log(error?.response?.data);
       window.alert(error?.response?.data?.message);
     }
-  };
+  }
 
   const fetchComments = async (postId) => {
     try {
@@ -51,7 +51,7 @@ export default function GlobalState() {
     } catch (error) {
       console.log(error?.response?.data);
     }
-  };
+  }
 
   return {
     context,

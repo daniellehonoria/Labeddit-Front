@@ -1,17 +1,17 @@
 //guarda as funções de redirecionamento
 export const goToHomePage = (navigate) => {
-    navigate("/");
-  };
+    navigate("/")
+  }
   
   export const goToLoginPage = (navigate) => {
-    navigate("/login");
-  };
+    navigate("/login")
+  }
   
   export const goToSignupPage = (navigate) => {
-    navigate("/signup");
-  };
+    navigate("/signup")
+  }
   
   export const goToPostsPage = (navigate) => {
-    navigate("/posts");
-  };
+    navigate("/posts")
+  }
   

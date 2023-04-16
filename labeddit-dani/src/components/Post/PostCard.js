@@ -78,7 +78,7 @@ const PostCard = (props) => {
           </Button>
         </Stack>
     </Stack>
-  );
+  )
 }
 
 export default PostCard
