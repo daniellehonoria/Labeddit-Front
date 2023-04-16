@@ -1,33 +1,63 @@
-import React from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { GlobalContext } from "../../contexts/GlobalContext";
+
 import logo from "../../assets/labeddit-logo.png"
-import {Flex, Box, FormControl, Input, InputGroup, InputRightElement, Stack, Heading, 
-  Text,useColorModeValue, Link, HStack, Button, Spinner} from '@chakra-ui/react';
-import { useState } from 'react';
+import {
+  Flex, Box, FormControl, Input, InputGroup, InputRightElement, Stack, Heading,
+  Text, useColorModeValue, Link, HStack, Button, Spinner
+} from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import axios from 'axios';
-import { goToLoginPage } from '../../routes/coordinator';
+import { goToLoginPage, goToPostsPage } from '../../routes/coordinator';
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../../constants/url';
 
 const SignupPage = () => {
   const navigate = useNavigate()
+  const context = useContext(GlobalContext);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [enter, setEnter]= useState(false)
-
-  const loginPage = async() =>{
+  const [enter, setEnter] = useState(false)
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const loginPage = async () => {
     try {
       setEnter(true)
       await axios.post(`${BASE_URL}/users/signup`)
       setEnter(false)
       goToLoginPage(navigate)
     } catch (error) {
-      
+
     }
   }
+  const onChangeForm = (event) => {
+    setForm({ ...form, [event.target.name]: event.target.value })
+  };
+  const signup = async () => {
+    try {
+      const body = {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+      };
+
+      const response = await axios.post(`${BASE_URL}/users/signup`, body)
+
+      window.localStorage.setItem("labeddit-token", response.data.token)
+
+      context.context.setIsLogged(true)
+
+      goToPostsPage(navigate)
+    } catch (error) {
+      alert(error.response.data)
+    }
+  };
   return (
     <>
-    {/* Header */}
+      {/* Header */}
       <Box bg={useColorModeValue('#EDEDED')} px={4}>
         <Flex h={16} alignItems={'flex-end'} justifyContent={'center'} >
 
@@ -36,15 +66,15 @@ const SignupPage = () => {
           </Flex>
         </Flex>
         <HStack px={4} justifyContent={'end'} >
-          <Link onClick={loginPage} 
-          color={'#4088CB'} 
-          font-weight={'bolder'} 
-          fontSize={'20'} >
-          {!enter ? 'Entrar' : <Spinner />}</Link>
+          <Link onClick={loginPage}
+            color={'#4088CB'}
+            font-weight={'bolder'}
+            fontSize={'20'} >
+            {!enter ? 'Entrar' : <Spinner />}</Link>
         </HStack>
       </Box>
 
-{/* Signup */}
+      {/* Signup */}
       <Flex
         minH={'80vh'}
         align={'center'}
@@ -62,14 +92,26 @@ const SignupPage = () => {
             <Stack spacing={2}
               pt={20}  >
               <FormControl id="apelido" isRequired>
-                <Input type="text" placeholder='Apelido' />
+                <Input type="text"
+                  placeholder='Apelido'
+                  name="name"
+                  value={form.name}
+                  onChange={onChangeForm} />
               </FormControl>
               <FormControl id="email" isRequired>
-                <Input type="email" placeholder='E-mail' />
+                <Input type="email"
+                  placeholder='E-mail'
+                  name="email"
+                  value={form.email}
+                  onChange={onChangeForm} />
               </FormControl>
               <FormControl id="password" isRequired>
                 <InputGroup>
-                  <Input placeholder='Senha' type={showPassword ? 'text' : 'password'} />
+                  <Input placeholder='Senha'
+                    type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    value={form.password}
+                    onChange={onChangeForm} />
                   <InputRightElement h={'full'}>
                     <Button
                       variant={'ghost'}
@@ -94,6 +136,7 @@ const SignupPage = () => {
               </Stack>
               <Stack spacing={10} pt={2}>
                 <Button
+                onClick={signup}
                   height="51px"
                   loadingText="Submitting"
                   borderRadius="20"
