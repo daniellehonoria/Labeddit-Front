@@ -6,7 +6,7 @@ const HomePage = () => {
   const navigate = useNavigate()
   useEffect(() => {
     goToLoginPage(navigate)
-  }, []);
+  }, [])
 
   return (
     <div>HomePage</div>

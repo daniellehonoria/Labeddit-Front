@@ -2,7 +2,7 @@ import { PostPageStyled } from "./PostPageStyled"
 import logo from "../../assets/labeddit-logo.png"
 import { Link, useNavigate } from "react-router-dom"
 import { goToLoginPage } from "../../routes/coordinator"
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import { BASE_URL } from "../../constants/url"
 import PostCard from "../../components/Post/PostCard"
@@ -10,7 +10,6 @@ import line from "../../assets/line.svg"
 const PostPage = (post) => {
     const [content, setContent] = useState("");
     const [comment, setComment] = useState([]);
-
     const [posts, setPosts] = useState([])
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +62,7 @@ const PostPage = (post) => {
         } catch (error) {
           console.log(error);
         }
-      };
+      }
     
       const dislikePost = async (postId) => {
         try {
@@ -79,7 +78,7 @@ const PostPage = (post) => {
         } catch (error) {
           alert(error.response.data);
         }
-      };
+      }
 
     const createPost = async () => {
         try {
@@ -94,7 +93,7 @@ const PostPage = (post) => {
             },
           };
            const response = await axios.post(
-            `${BASE_URL}/posts/create`,
+            `${BASE_URL}/posts`,
             body, config
           );
           setPosts(response.data);
@@ -122,11 +121,11 @@ const PostPage = (post) => {
         } catch (error) {
           console.log(error);
         }
-      };
+      }
     
       useEffect(() => {
         fetchComments(post.id);
-      }, []);
+      }, [])
     return (
         <PostPageStyled>
             <header>
@@ -166,7 +165,7 @@ const PostPage = (post) => {
               return <PostCard key={post.id} 
               post={post} like={likePost} 
               comment={comment.length} 
-              dislike={dislikePost}/>;
+              dislike={dislikePost}/>
             })
             .reverse()}
             

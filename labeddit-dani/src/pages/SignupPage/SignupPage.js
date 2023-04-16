@@ -1,22 +1,18 @@
-import { useContext, useEffect, useState } from 'react'
-import { GlobalContext } from "../../contexts/GlobalContext";
-
+import { useContext, useState } from 'react'
+import { GlobalContext } from "../../contexts/GlobalContext"
 import logo from "../../assets/labeddit-logo.png"
-import {
-  Flex, Box, FormControl, Input, InputGroup, InputRightElement, Stack, Heading,
-  Text, useColorModeValue, Link, HStack, Button, Spinner
-} from '@chakra-ui/react';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import axios from 'axios';
-import { goToLoginPage, goToPostsPage } from '../../routes/coordinator';
-import { useNavigate } from 'react-router-dom';
-import { BASE_URL } from '../../constants/url';
+import {Flex, Box, FormControl, Input, InputGroup, InputRightElement, Stack, Heading,
+  Text, useColorModeValue, Link, HStack, Button, Spinner} from '@chakra-ui/react'
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
+import axios from 'axios'
+import { goToLoginPage, goToPostsPage } from '../../routes/coordinator'
+import { useNavigate } from 'react-router-dom'
+import { BASE_URL } from '../../constants/url'
 
 const SignupPage = () => {
   const navigate = useNavigate()
   const context = useContext(GlobalContext);
-
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
   const [enter, setEnter] = useState(false)
   const [form, setForm] = useState({
     name: "",
@@ -35,7 +31,7 @@ const SignupPage = () => {
   }
   const onChangeForm = (event) => {
     setForm({ ...form, [event.target.name]: event.target.value })
-  };
+  }
   const signup = async () => {
     try {
       const body = {
@@ -54,7 +50,7 @@ const SignupPage = () => {
     } catch (error) {
       alert(error.response.data)
     }
-  };
+  }
   return (
     <>
       {/* Header */}
@@ -157,7 +153,7 @@ const SignupPage = () => {
         </Stack>
       </Flex>
     </>
-  );
+  )
 }
 
 export default SignupPage
