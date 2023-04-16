@@ -5,7 +5,6 @@ import { goToLoginPage } from "../../routes/coordinator"
 import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { BASE_URL } from "../../constants/url"
-import { GlobalContext } from "../../contexts/GlobalContext"
 import PostCard from "../../components/Post/PostCard"
 import line from "../../assets/line.svg"
 const PostPage = (post) => {
@@ -16,6 +15,7 @@ const PostPage = (post) => {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false);
 
+    //RENDERIZA SÓ SE USUARIO ESTIVER LOGADO
     const [logout, setLogout] = useState(false)
     useEffect(()=>{
         const token = window.localStorage.getItem("labeddit-token")
@@ -35,6 +35,7 @@ const PostPage = (post) => {
         }
        
     }
+    //RENDERIZA TODOS OS POSTS
     useEffect(()=>{
         fetchPosts()
     },[])
@@ -76,8 +77,7 @@ const PostPage = (post) => {
           });
           fetchPosts();
         } catch (error) {
-          console.log(error?.response?.data);
-          alert(error?.response?.data);
+          alert(error.response.data);
         }
       };
 
@@ -88,19 +88,25 @@ const PostPage = (post) => {
           const body = {
             content: content,
           };
+          const config = {
+            headers: {
+              Authorization: window.localStorage.getItem("labeddit-token"),
+            },
+          };
            const response = await axios.post(
             `${BASE_URL}/posts/create`,
-            body
+            body, config
           );
           setPosts(response.data);
           fetchPosts();
           setContent("");
         } catch (error) {
           console.log(error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
+          alert(error.response.data);
+      }finally {
+      setIsLoading(false);
+    }
+    }
       const fetchComments = async (postId) => {
         try {
           const config = {
@@ -146,7 +152,8 @@ const PostPage = (post) => {
               onChange={(event) => setContent(event.target.value)}
             />
           </div>
-          <button className= 'postButton'type="submit" onClick={createPost} disabled={isLoading}>
+          <button className= 'postButton'type="submit" 
+          onClick={createPost} disabled={isLoading}>
             {isLoading ? <div className="loading"></div> : "Postar"}
           </button>
         </section>
@@ -156,7 +163,10 @@ const PostPage = (post) => {
         <section className="container-posts">
           {Array.isArray(posts) && posts
             .map((post) => {
-              return <PostCard key={post.id} post={post} like={likePost} comment={comment.length} dislike={dislikePost}/>;
+              return <PostCard key={post.id} 
+              post={post} like={likePost} 
+              comment={comment.length} 
+              dislike={dislikePost}/>;
             })
             .reverse()}
             
