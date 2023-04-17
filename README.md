@@ -18,9 +18,9 @@ Quem se cadastrar no aplicativo poderá criar e curtir publicações.
   - [x] Descurtir posts de outros usuários
 
 ### :hammer_and_wrench: Tecnologias utilizadas
--React.js
--Styled Components
--Chackra ui
--React Hooks
--Consumo de API
--Axios
+- React.js
+- Styled Components
+- Chackra ui
+- React Hooks
+- Consumo de API
+- Axios
