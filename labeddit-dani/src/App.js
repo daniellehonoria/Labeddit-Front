@@ -1,4 +1,3 @@
-import Header from "./components/Header/Header";
 import Router from "./routes/Router"
 import { ChakraProvider } from '@chakra-ui/react'
 import {GlobalContext} from "./contexts/GlobalContext"
